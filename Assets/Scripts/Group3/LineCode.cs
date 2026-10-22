@@ -9,7 +9,7 @@ public class LineCode : MonoBehaviour
     public Transform destination;
 
     [Header("Cor por estado da mão")]
-    public HandTracking handTracking;   // opcional
+    //public HandTracking handTracking;   // opcional
     public Color corAberta = Color.green;
     public Color corFechada = Color.red;
 
@@ -27,11 +27,11 @@ public class LineCode : MonoBehaviour
         lineRenderer.SetPosition(0, origin.position);
         lineRenderer.SetPosition(1, destination.position);
 
-        if (handTracking != null)
-        {
-            Color c = handTracking.MaoFechada ? corFechada : corAberta;
-            lineRenderer.startColor = c;
-            lineRenderer.endColor = c;
-        }
+        //if (handTracking != null)
+        //{
+        //    Color c = handTracking.MaoFechada ? corFechada : corAberta;
+        //    lineRenderer.startColor = c;
+        //    lineRenderer.endColor = c;
+        //}
     }
 }
