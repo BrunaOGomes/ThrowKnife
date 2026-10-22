@@ -1,3 +1,7 @@
+
+
+
+
 import cv2
 from hand_detection import HandDetection
 from frame import Frame
