@@ -1,3 +1,4 @@
+import json
 import time
 
 class Frame:
@@ -17,3 +18,6 @@ class Frame:
             "pitch": self.pitch,
             "landmarks": self.landmarks,
         }
+
+    def to_json(self):
+        return json.dumps(self.to_dict())

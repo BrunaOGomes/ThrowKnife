@@ -12,7 +12,7 @@ class FakeSender:
     def send(self, frame):
         for frame in self.get_frame():
             # envia frame no servidor
-            self.socket.send(frame)
+            self.socket.send(frame.to_json().encode())
 
     def get_frame(self):
         for _ in range(10):
@@ -20,4 +20,4 @@ class FakeSender:
             self.frame.yaw = random.randint(0, 100)
             self.frame.pitch = random.randint(0, 100)
             self.frame.mao_fechada = random.choice([True, False])
-            yield self.frame.to_dict()
+            yield self.frame
