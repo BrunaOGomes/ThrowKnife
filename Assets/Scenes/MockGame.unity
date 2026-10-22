@@ -357,8 +357,8 @@ MonoBehaviour:
   knifePrefab: {fileID: 5472829615114505845, guid: 1168c99d08a9f10489e5e3d97194c63c, type: 3}
   palmAnchor: {fileID: 903477530110305382}
   minThrowSpeed: 2.5
-  throwBoost: 1.2
-  upwardBoost: 0.3
+  throwBoost: 1.5
+  upwardBoost: 0.8
   gravity: {x: 0, y: -9.81, z: 0}
   torqueOnThrow: 5
   balloonPlaneZ: 5
@@ -368,6 +368,12 @@ MonoBehaviour:
   - {fileID: 869662999}
   - {fileID: 363986197}
   outOfSceneZ: 20
+  _hasPrev: 0
+  _holding: 0
+  _knife: {fileID: 0}
+  _initialVel: {x: 0, y: 0, z: 0}
+  _resolved: 0
+  _hitBalloon: {fileID: 0}
 --- !u!4 &561904703
 Transform:
   m_ObjectHideFlags: 0
@@ -594,10 +600,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1b723804df4dc44d90d71d41ae5eb99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MockGroup2.MockGameManager
-  facasIniciais: 3
+  facasIniciais: 500000
   estoqueCentro: {x: -1, y: 2, z: 0}
   estoqueExtents: {x: 3, y: 3, z: 3}
   throwController: {fileID: 561904702}
+  _facas: 0
 --- !u!4 &1002358576
 Transform:
   m_ObjectHideFlags: 0
@@ -657,6 +664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6739b464a16d949be7f7e57608add3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UDPReceive
+  isRunning: 0
   port: 6767
   startReceiving: 1
   printToConsole: 0
@@ -1040,10 +1048,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 8434638889871254660}
   destination: {fileID: 7818642217429299331}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!1 &223570084762930970
 GameObject:
   m_ObjectHideFlags: 0
@@ -2034,10 +2051,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 903477530110305382}
   destination: {fileID: 4865081281141265828}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!1 &1907211881381100100
 GameObject:
   m_ObjectHideFlags: 0
@@ -2195,10 +2221,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 6780618591094484994}
   destination: {fileID: 2712449865835205894}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!4 &2137815610742701743
 Transform:
   m_ObjectHideFlags: 0
@@ -2336,10 +2371,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 3189760419686290283}
   destination: {fileID: 6780618591094484994}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!4 &2262371578495782282
 Transform:
   m_ObjectHideFlags: 0
@@ -2774,10 +2818,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 5790113138990310357}
   destination: {fileID: 7279048838332809008}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!4 &3026522064251730763
 Transform:
   m_ObjectHideFlags: 0
@@ -3261,10 +3314,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 241468153170873205}
   destination: {fileID: 6309796979396575476}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!135 &3427908544837274798
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3539,10 +3601,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 6840423504800947920}
   destination: {fileID: 7398605355353587656}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!114 &4038308528100401128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3555,10 +3626,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 903477530110305382}
   destination: {fileID: 8434638889871254660}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!1 &4070744720594688019
 GameObject:
   m_ObjectHideFlags: 0
@@ -3632,10 +3712,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 6292181323394818083}
   destination: {fileID: 9130835629462851374}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!135 &4269077909035146674
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4456,10 +4545,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 9130835629462851374}
   destination: {fileID: 6840423504800947920}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!1 &5043360895079521704
 GameObject:
   m_ObjectHideFlags: 0
@@ -4542,10 +4640,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 4865081281141265828}
   destination: {fileID: 241468153170873205}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!23 &5328685546903817785
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5006,10 +5113,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 6309796979396575476}
   destination: {fileID: 6292181323394818083}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!1 &6277387135991418380
 GameObject:
   m_ObjectHideFlags: 0
@@ -5180,10 +5296,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 1432446952094435356}
   destination: {fileID: 5790113138990310357}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!1 &6492238803938063015
 GameObject:
   m_ObjectHideFlags: 0
@@ -5368,10 +5493,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 241468153170873205}
   destination: {fileID: 1669824555585598750}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!4 &6780618591094484994
 Transform:
   m_ObjectHideFlags: 0
@@ -5542,10 +5676,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 8040170693219120172}
   destination: {fileID: 6636609488418336558}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!33 &7220032992226531486
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -5584,10 +5727,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 1669824555585598750}
   destination: {fileID: 8192715764037734063}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!4 &7279048838332809008
 Transform:
   m_ObjectHideFlags: 0
@@ -5935,10 +6087,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 4865081281141265828}
   destination: {fileID: 3189760419686290283}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!120 &8086925249370154323
 LineRenderer:
   serializedVersion: 3
@@ -6268,10 +6429,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 7818642217429299331}
   destination: {fileID: 8040170693219120172}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!4 &8464248962968717016
 Transform:
   m_ObjectHideFlags: 0
@@ -6495,10 +6665,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 8192715764037734063}
   destination: {fileID: 2895843042129902752}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!4 &8763566763506448545
 Transform:
   m_ObjectHideFlags: 0
@@ -6584,10 +6763,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 6309796979396575476}
   destination: {fileID: 1432446952094435356}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!1 &9024554544101578628
 GameObject:
   m_ObjectHideFlags: 0
@@ -6716,10 +6904,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
+  lineRenderer: {fileID: 0}
   origin: {fileID: 903477530110305382}
   destination: {fileID: 6292181323394818083}
-  corAberta: {r: 0, g: 1, b: 0, a: 1}
-  corFechada: {r: 1, g: 0, b: 0, a: 1}
+  corAberta:
+    r: 0
+    g: 1
+    b: 0
+    a: 1
+  corFechada:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
 --- !u!33 &9218293353345268653
 MeshFilter:
   m_ObjectHideFlags: 0
