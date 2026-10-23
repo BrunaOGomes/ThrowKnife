@@ -25,11 +25,14 @@ while True:
     if not success:
         break
 
-    landmarks = detector.process_frame(img)
+    resultado = detector.process_frame(img)
+
+    w, h, _ = img.shape
 
     # Landmark valores - (x, y, z) * 21
-    if landmarks is not None:
-        frame = Frame(landmarks=landmarks, yaw=0, pitch=0, mao_fechada=False)
+    if resultado is not None:
+        landmarks, yaw, pitch, mao_fechada = resultado
+        frame = Frame(landmarks=landmarks, yaw=yaw, pitch=pitch, mao_fechada=mao_fechada)
         sock.sendto(frame.to_json().encode(), serverAddressPort)
     
     

@@ -4,6 +4,8 @@ from pathlib import Path
 import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
+import numpy as np
+import math
 
 
 def _find_project_root() -> Path:
@@ -85,12 +87,47 @@ class HandDetection:
                  (0, 255, 0), 2)
 
         # Desenha pontos e monta lista
+        yaw, pitch = self.yaw_pitch_detection(hand, w, h)
         for lm in hand:
-            cx, cy, cz = int(lm.x * w), int(lm.y * h), int(lm.z * 1000)
+            # desenho: converte para pixels porque cv2.circle trabalha em pixels.
+            # myHand: mantém normalizado (0..1) porque o Unity espera essa escala.
+            cx, cy = int(lm.x * w), int(lm.y * h)
             cv2.circle(frame, (cx, cy), 4, (0, 0, 255), -1)
-            myHand.append([cx, cy, cz])
+            myHand.append([lm.x, lm.y, lm.z])
 
-        return myHand
+        mao_fechada = self.mao_fechada_detection(hand, w, h)
+        return myHand, yaw, pitch, mao_fechada
+
+    def yaw_pitch_detection(self, landmarks, w, h):
+
+        def _3d_coordinates(hand_index):
+            return np.array([landmarks[hand_index].x * w, -landmarks[hand_index].y * h, -landmarks[hand_index].z * w])
+
+        d = _3d_coordinates(9) - _3d_coordinates(0)
+        d /= np.linalg.norm(d)
+
+        yaw   = math.degrees(math.atan2(d[0], d[2]))                     # esquerda/direita
+        pitch = math.degrees(math.atan2(d[1], math.hypot(d[0], d[2])))  # cima/baixo
+        return yaw, pitch
+
+
+    def mao_fechada_detection(self, hand, w, h):
+        def dist(i, j):
+            dx = (hand[i].x - hand[j].x) * w
+            dy = (hand[i].y - hand[j].y) * h
+            return math.hypot(dx, dy)
+
+        palma = dist(0, 9)
+        if palma == 0:
+            return False
+
+        # conta dedos estendidos: ponta longe da base do dedo
+        estendidos = sum(
+            1 for ponta, base in [(8, 5), (12, 9), (16, 13), (20, 17)]
+            if dist(ponta, base) / palma > 0.6
+        )
+
+        return estendidos <= 1   # fechada = no máximo 1 dedo estendido
 
     def close(self):
         self.detector.close()
