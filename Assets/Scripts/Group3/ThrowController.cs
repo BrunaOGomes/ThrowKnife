@@ -9,18 +9,18 @@ namespace Group3
         public HandTracking handTracking;
 
         [Header("Referência ao Grupo 2 (contrato)")]
-        [Tooltip("Objeto que tem o método público bool TentarPegarFaca(Vector3 maoMundo).")]
         public MonoBehaviour gameManagerBehaviour;
-
         private Func<Vector3, bool> _tentarPegarFaca;
 
-        // Contratos Grupo 3 -> Grupo 2
         public event Action OnFacaColidiu;
         public event Action OnFacaSaiuDaCena;
         public event Action<LaunchData> OnLancamento;
 
-        [Header("Faca (prefab)")]
-        public Rigidbody knifePrefab;
+        [Header("Facas na Cena (Ordem de uso)")]
+        [Tooltip("Arraste as 3 facas da mesa aqui, na ordem que devem ser pegas.")]
+        public Rigidbody[] facasNaMesa;
+        private int _indiceFacaAtual = 0;
+
         public Transform palmAnchor;
 
         [Header("Lançamento")]
@@ -38,7 +38,6 @@ namespace Group3
         public Transform[] balloons;
         public float outOfSceneZ = 20f;
 
-        // ---- estado interno ----
         private HandVelocityCalculator _calc = new HandVelocityCalculator();
         private HandFrameData _prev;
         private bool _hasPrev;
@@ -46,7 +45,6 @@ namespace Group3
         private Rigidbody _knife;
         private Vector3 _initialVel;
         private bool _resolved;
-        private Transform _hitBalloon;
 
         void Awake()
         {
@@ -54,14 +52,7 @@ namespace Group3
             {
                 var m = gameManagerBehaviour.GetType().GetMethod("TentarPegarFaca");
                 if (m != null)
-                    _tentarPegarFaca = (Func<Vector3, bool>)Delegate.CreateDelegate(
-                        typeof(Func<Vector3, bool>), gameManagerBehaviour, m);
-                else
-                    Debug.LogError("[ThrowController] gameManagerBehaviour não tem TentarPegarFaca(Vector3).", this);
-            }
-            else
-            {
-                Debug.LogError("[ThrowController] gameManagerBehaviour não atribuído.", this);
+                    _tentarPegarFaca = (Func<Vector3, bool>)Delegate.CreateDelegate(typeof(Func<Vector3, bool>), gameManagerBehaviour, m);
             }
         }
 
@@ -77,28 +68,15 @@ namespace Group3
                 bool fechou = !_prev.MaoFechada && f.MaoFechada;
                 bool abriu = _prev.MaoFechada && !f.MaoFechada;
 
-                // Se fechou a mão e ainda não está segurando, tenta pegar.
-                if (fechou && !_holding)
-                {
-                    TryGrab(f.PalmWorldPos);
-                }
+                if (fechou && !_holding) TryGrab(f.PalmWorldPos);
 
-                // Se abriu a mão e ESTÁ segurando, lança ou dropa.
                 if (abriu && _holding)
                 {
-                    if (_calc.Speed >= minThrowSpeed)
-                    {
-                        Throw(f);
-                    }
-                    else
-                    {
-                        Drop();
-                    }
+                    if (_calc.Speed >= minThrowSpeed) Throw(f);
+                    else Drop();
                 }
             }
-
-            _prev = f;
-            _hasPrev = true;
+            _prev = f; _hasPrev = true;
         }
 
         void FixedUpdate()
@@ -108,14 +86,13 @@ namespace Group3
             _knife.AddForce(gravity, ForceMode.Acceleration);
 
             Vector3 pos = _knife.position;
-            bool cruzou = (_initialVel.z > 0f && pos.z >= balloonPlaneZ)
-                       || (_initialVel.z < 0f && pos.z <= balloonPlaneZ);
+            bool cruzou = (_initialVel.z > 0f && pos.z >= balloonPlaneZ) || (_initialVel.z < 0f && pos.z <= balloonPlaneZ);
 
             if (cruzou && TryHitBalloon(pos))
             {
                 _resolved = true;
                 OnFacaColidiu?.Invoke();
-                Destroy(_knife.gameObject);
+                Destroy(_knife.gameObject); // A faca acertou o balão, então é destruída
                 _knife = null;
                 return;
             }
@@ -134,28 +111,52 @@ namespace Group3
             if (_holding || _tentarPegarFaca == null) return;
             if (!_tentarPegarFaca(maoMundo)) return;
 
-            _knife = Instantiate(knifePrefab, palmAnchor.position, palmAnchor.rotation);
+            if (_indiceFacaAtual >= facasNaMesa.Length) return;
+
+            _knife = facasNaMesa[_indiceFacaAtual];
+            _indiceFacaAtual++;
+
+            // 1. Ativa a faca na cena
+            _knife.gameObject.SetActive(true);
+
+            // 2. Desliga a física para ela não cair nem tremer
             _knife.isKinematic = true;
             _knife.useGravity = false;
-            _knife.transform.SetParent(palmAnchor, worldPositionStays: true);
+            _knife.linearVelocity = Vector3.zero;
+            _knife.angularVelocity = Vector3.zero;
+
+            // 3. Cola a faca na mão (Zera a posição local para ficar no centro da mão)
+            _knife.transform.SetParent(palmAnchor);
+            _knife.transform.localPosition = Vector3.zero;
+            _knife.transform.localRotation = Quaternion.identity;
+
             _holding = true;
             _resolved = false;
-            Debug.Log("[ThrowController] Faca presa na mão.");
+            Debug.Log($"[ThrowController] Faca {_indiceFacaAtual} presa na mão.");
         }
 
         private void Throw(HandFrameData f)
-        { 
+        {
             if (_knife == null) return;
 
-            _knife.transform.SetParent(null, worldPositionStays: true);
+            // 1. Descola a faca da mão
+            _knife.transform.SetParent(null);
+
+            // 2. Liga a física novamente
             _knife.isKinematic = false;
             _knife.useGravity = false;
 
+            // 3. Calcula a velocidade
             Vector3 vel = _calc.Direction * (_calc.Speed * throwBoost);
             vel.y += upwardBoost;
+
+            // Força o Z para frente para garantir que a faca vá para os balões
+            vel.z = Mathf.Max(vel.z, 5f);
+
             _initialVel = vel;
 
-            _knife.linearVelocity = vel;   // Unity 6; use .velocity no < 6
+            // 4. Aplica a velocidade para a faca voar
+            _knife.linearVelocity = vel;
             _knife.angularVelocity = UnityEngine.Random.onUnitSphere * torqueOnThrow;
 
             _holding = false;
@@ -181,26 +182,23 @@ namespace Group3
             _knife.linearVelocity = Vector3.zero;
             _knife.angularVelocity = Vector3.zero;
             _holding = false;
-
             _resolved = true;
+
             OnFacaSaiuDaCena?.Invoke();
-            Debug.Log("[ThrowController] Soltou sem velocidade.");
         }
 
         private bool TryHitBalloon(Vector3 knifePos)
         {
-            _hitBalloon = null;
             if (balloons == null) return false;
-
             Vector2 k = new Vector2(knifePos.x, knifePos.y);
             float best = hitRadius;
             foreach (var b in balloons)
             {
-                if (b == null) continue;
+                if (b == null || !b.gameObject.activeSelf) continue; // Só checa balões ativos
                 float d = Vector2.Distance(k, new Vector2(b.position.x, b.position.y));
-                if (d <= best) { best = d; _hitBalloon = b; }
+                if (d <= best) { best = d; return true; }
             }
-            return _hitBalloon != null;
+            return false;
         }
     }
 }

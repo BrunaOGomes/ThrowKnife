@@ -211,7 +211,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &363986193
+--- !u!1 &417493525
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -219,105 +219,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 363986197}
-  - component: {fileID: 363986196}
-  - component: {fileID: 363986195}
-  - component: {fileID: 363986194}
+  - component: {fileID: 417493527}
+  - component: {fileID: 417493526}
   m_Layer: 0
-  m_Name: Balloon (3)
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!135 &363986194
-SphereCollider:
+--- !u!114 &417493526
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 363986193}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &363986195
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 363986193}
+  m_GameObject: {fileID: 417493525}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: bbdf7606b5fe6864c9dc7aad51678bc7, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &363986196
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 363986193}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &363986197
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75d334fe83f8f5d48935775ff075a86b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Group2.GameManager
+  throwController: {fileID: 0}
+  estoqueCentro: {x: 3, y: 2, z: 0}
+  estoqueExtents: {x: 1.5, y: 1.5, z: 1}
+  facasIniciais: 3
+  baloes: []
+  textoFacas: {fileID: 0}
+  textoPontuacao: {fileID: 0}
+  painelFimDeJogo: {fileID: 0}
+--- !u!4 &417493527
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 363986193}
+  m_GameObject: {fileID: 417493525}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 1.5, z: 5}
+  m_LocalPosition: {x: 2.64046, y: -0, z: 0.48853}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -364,16 +304,10 @@ MonoBehaviour:
   balloonPlaneZ: 5
   hitRadius: 0.6
   balloons:
-  - {fileID: 1750809937}
-  - {fileID: 869662999}
-  - {fileID: 363986197}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   outOfSceneZ: 20
-  _hasPrev: 0
-  _holding: 0
-  _knife: {fileID: 0}
-  _initialVel: {x: 0, y: 0, z: 0}
-  _resolved: 0
-  _hitBalloon: {fileID: 0}
 --- !u!4 &561904703
 Transform:
   m_ObjectHideFlags: 0
@@ -459,118 +393,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &869662995
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 869662999}
-  - component: {fileID: 869662998}
-  - component: {fileID: 869662997}
-  - component: {fileID: 869662996}
-  m_Layer: 0
-  m_Name: Balloon (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!135 &869662996
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 869662995}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &869662997
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 869662995}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: f18cf899ae7836845a833d9537690a05, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &869662998
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 869662995}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &869662999
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 869662995}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2, y: 1.5, z: 5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1002358574
 GameObject:
   m_ObjectHideFlags: 0
@@ -604,7 +426,6 @@ MonoBehaviour:
   estoqueCentro: {x: -1, y: 2, z: 0}
   estoqueExtents: {x: 3, y: 3, z: 3}
   throwController: {fileID: 561904702}
-  _facas: 0
 --- !u!4 &1002358576
 Transform:
   m_ObjectHideFlags: 0
@@ -664,7 +485,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6739b464a16d949be7f7e57608add3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UDPReceive
-  isRunning: 0
   port: 6767
   startReceiving: 1
   printToConsole: 0
@@ -796,118 +616,6 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
---- !u!1 &1750809933
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1750809937}
-  - component: {fileID: 1750809936}
-  - component: {fileID: 1750809935}
-  - component: {fileID: 1750809934}
-  m_Layer: 0
-  m_Name: Balloon (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!135 &1750809934
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1750809933}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &1750809935
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1750809933}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 6507edb6a68d1b84ebdc781eb7a659f5, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1750809936
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1750809933}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1750809937
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1750809933}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &96702718130099734
 GameObject:
   m_ObjectHideFlags: 0
@@ -1048,19 +756,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 8434638889871254660}
   destination: {fileID: 7818642217429299331}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &223570084762930970
 GameObject:
   m_ObjectHideFlags: 0
@@ -2051,19 +1750,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 903477530110305382}
   destination: {fileID: 4865081281141265828}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &1907211881381100100
 GameObject:
   m_ObjectHideFlags: 0
@@ -2221,19 +1911,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 6780618591094484994}
   destination: {fileID: 2712449865835205894}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!4 &2137815610742701743
 Transform:
   m_ObjectHideFlags: 0
@@ -2371,19 +2052,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 3189760419686290283}
   destination: {fileID: 6780618591094484994}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!4 &2262371578495782282
 Transform:
   m_ObjectHideFlags: 0
@@ -2818,19 +2490,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 5790113138990310357}
   destination: {fileID: 7279048838332809008}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!4 &3026522064251730763
 Transform:
   m_ObjectHideFlags: 0
@@ -3314,19 +2977,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 241468153170873205}
   destination: {fileID: 6309796979396575476}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!135 &3427908544837274798
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3601,19 +3255,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 6840423504800947920}
   destination: {fileID: 7398605355353587656}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &4038308528100401128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3626,19 +3271,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 903477530110305382}
   destination: {fileID: 8434638889871254660}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &4070744720594688019
 GameObject:
   m_ObjectHideFlags: 0
@@ -3712,19 +3348,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 6292181323394818083}
   destination: {fileID: 9130835629462851374}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!135 &4269077909035146674
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4545,19 +4172,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 9130835629462851374}
   destination: {fileID: 6840423504800947920}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &5043360895079521704
 GameObject:
   m_ObjectHideFlags: 0
@@ -4640,19 +4258,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 4865081281141265828}
   destination: {fileID: 241468153170873205}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!23 &5328685546903817785
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5113,19 +4722,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 6309796979396575476}
   destination: {fileID: 6292181323394818083}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &6277387135991418380
 GameObject:
   m_ObjectHideFlags: 0
@@ -5296,19 +4896,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 1432446952094435356}
   destination: {fileID: 5790113138990310357}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &6492238803938063015
 GameObject:
   m_ObjectHideFlags: 0
@@ -5493,19 +5084,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 241468153170873205}
   destination: {fileID: 1669824555585598750}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!4 &6780618591094484994
 Transform:
   m_ObjectHideFlags: 0
@@ -5676,19 +5258,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 8040170693219120172}
   destination: {fileID: 6636609488418336558}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!33 &7220032992226531486
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -5727,19 +5300,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 1669824555585598750}
   destination: {fileID: 8192715764037734063}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!4 &7279048838332809008
 Transform:
   m_ObjectHideFlags: 0
@@ -6087,19 +5651,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 4865081281141265828}
   destination: {fileID: 3189760419686290283}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!120 &8086925249370154323
 LineRenderer:
   serializedVersion: 3
@@ -6429,19 +5984,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 7818642217429299331}
   destination: {fileID: 8040170693219120172}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!4 &8464248962968717016
 Transform:
   m_ObjectHideFlags: 0
@@ -6665,19 +6211,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 8192715764037734063}
   destination: {fileID: 2895843042129902752}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!4 &8763566763506448545
 Transform:
   m_ObjectHideFlags: 0
@@ -6763,19 +6300,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 6309796979396575476}
   destination: {fileID: 1432446952094435356}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &9024554544101578628
 GameObject:
   m_ObjectHideFlags: 0
@@ -6904,19 +6432,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37ed760b079a914abf96612b55cfdf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineCode
-  lineRenderer: {fileID: 0}
   origin: {fileID: 903477530110305382}
   destination: {fileID: 6292181323394818083}
-  corAberta:
-    r: 0
-    g: 1
-    b: 0
-    a: 1
-  corFechada:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  corAberta: {r: 0, g: 1, b: 0, a: 1}
+  corFechada: {r: 1, g: 0, b: 0, a: 1}
 --- !u!33 &9218293353345268653
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6936,6 +6455,4 @@ SceneRoots:
   - {fileID: 580960154}
   - {fileID: 561904703}
   - {fileID: 1002358576}
-  - {fileID: 1750809937}
-  - {fileID: 869662999}
-  - {fileID: 363986197}
+  - {fileID: 417493527}
