@@ -1,37 +1,27 @@
 using UnityEngine;
 
-[RequireComponent(typeof(LineRenderer))]
-public class LineCode : MonoBehaviour
+namespace Group3
 {
-    LineRenderer lineRenderer;
-
-    public Transform origin;
-    public Transform destination;
-
-    [Header("Cor por estado da mão")]
-    //public HandTracking handTracking;   // opcional
-    public Color corAberta = Color.green;
-    public Color corFechada = Color.red;
-
-    void Start()
+    [RequireComponent(typeof(LineRenderer))]
+    public class LineCode : MonoBehaviour
     {
-        lineRenderer = GetComponent<LineRenderer>();
-        lineRenderer.startWidth = 0.1f;
-        lineRenderer.endWidth = 0.1f;
-    }
+        LineRenderer lineRenderer;
+        public Transform origin;
+        public Transform destination;
 
-    void Update()
-    {
-        if (origin == null || destination == null) return;
+        void Start()
+        {
+            lineRenderer = GetComponent<LineRenderer>();
+            lineRenderer.startWidth = 0.1f;
+            lineRenderer.endWidth = 0.1f;
+        }
 
-        lineRenderer.SetPosition(0, origin.position);
-        lineRenderer.SetPosition(1, destination.position);
+        void Update()
+        {
+            if (origin == null || destination == null) return;
 
-        //if (handTracking != null)
-        //{
-        //    Color c = handTracking.MaoFechada ? corFechada : corAberta;
-        //    lineRenderer.startColor = c;
-        //    lineRenderer.endColor = c;
-        //}
+            lineRenderer.SetPosition(0, origin.position);
+            lineRenderer.SetPosition(1, destination.position);
+        }
     }
 }

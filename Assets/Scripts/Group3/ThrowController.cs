@@ -60,6 +60,10 @@ namespace Group3
         {
             if (handTracking == null) return;
 
+            // Mantém a faca na palma sem trocar o pai do objeto durante o Play Mode.
+            if (_holding && _knife != null && palmAnchor != null)
+                _knife.transform.SetPositionAndRotation(palmAnchor.position, palmAnchor.rotation);
+
             HandFrameData f = handTracking.CurrentFrame;
             _calc.Update(f);
 
@@ -81,7 +85,8 @@ namespace Group3
 
         void FixedUpdate()
         {
-            if (_knife == null || _resolved) return;
+            // ADICIONE ESTA LINHA: Se a faca foi destruída OU se ela se tornou Kinematic (cravou na parede), ignora o resto
+            if (_knife == null || _resolved || _knife.isKinematic) return;
 
             _knife.AddForce(gravity, ForceMode.Acceleration);
 
@@ -92,8 +97,7 @@ namespace Group3
             {
                 _resolved = true;
                 OnFacaColidiu?.Invoke();
-                Destroy(_knife.gameObject); // A faca acertou o balão, então é destruída
-                _knife = null;
+                //Destroy(_knife.gameObject); // A faca acertou o balão, então é destruída
                 return;
             }
 
@@ -101,17 +105,29 @@ namespace Group3
             {
                 _resolved = true;
                 OnFacaSaiuDaCena?.Invoke();
-                Destroy(_knife.gameObject);
-                _knife = null;
+                //Destroy(_knife.gameObject);
             }
+        }
+
+        public void NotificarFacaCravada(GameObject faca)
+        {
+            if (_knife == null || _knife.gameObject != faca || _resolved) return;
+
+            _resolved = true;
+            _holding = false;
+            OnFacaSaiuDaCena?.Invoke();
         }
 
         private void TryGrab(Vector3 maoMundo)
         {
             if (_holding || _tentarPegarFaca == null) return;
+            if (palmAnchor == null)
+            {
+                Debug.LogError("[ThrowController] Palm Anchor não atribuído no Inspector!");
+                return;
+            }
+            if (facasNaMesa == null || _indiceFacaAtual >= facasNaMesa.Length) return;
             if (!_tentarPegarFaca(maoMundo)) return;
-
-            if (_indiceFacaAtual >= facasNaMesa.Length) return;
 
             _knife = facasNaMesa[_indiceFacaAtual];
             _indiceFacaAtual++;
@@ -121,14 +137,12 @@ namespace Group3
 
             // 2. Desliga a física para ela não cair nem tremer
             _knife.isKinematic = true;
+            _knife.detectCollisions = true;
             _knife.useGravity = false;
-            _knife.linearVelocity = Vector3.zero;
             _knife.angularVelocity = Vector3.zero;
 
-            // 3. Cola a faca na mão (Zera a posição local para ficar no centro da mão)
-            _knife.transform.SetParent(palmAnchor);
-            _knife.transform.localPosition = Vector3.zero;
-            _knife.transform.localRotation = Quaternion.identity;
+            // 3. Posiciona a faca na palma sem alterar a hierarquia da cena.
+            _knife.transform.SetPositionAndRotation(palmAnchor.position, palmAnchor.rotation);
 
             _holding = true;
             _resolved = false;
@@ -139,28 +153,26 @@ namespace Group3
         {
             if (_knife == null) return;
 
-            // 1. Descola a faca da mão
-            _knife.transform.SetParent(null);
-
-            // 2. Liga a física novamente
+            // Garante que a física está ativa e funcionando
             _knife.isKinematic = false;
             _knife.useGravity = false;
+            _knife.detectCollisions = true;
 
-            // 3. Calcula a velocidade
+            // IMPORTANTE: Força o Unity a atualizar o Rigidbody AGORA, antes de aplicar a velocidade
+            _knife.linearVelocity = Vector3.zero;
+            _knife.angularVelocity = Vector3.zero;
+
             Vector3 vel = _calc.Direction * (_calc.Speed * throwBoost);
             vel.y += upwardBoost;
-
-            // Força o Z para frente para garantir que a faca vá para os balões
             vel.z = Mathf.Max(vel.z, 5f);
 
             _initialVel = vel;
 
-            // 4. Aplica a velocidade para a faca voar
+            // Aplica a velocidade
             _knife.linearVelocity = vel;
             _knife.angularVelocity = UnityEngine.Random.onUnitSphere * torqueOnThrow;
 
             _holding = false;
-
             var launch = new LaunchData
             {
                 Posicao = new float[] { f.PalmWorldPos.x, f.PalmWorldPos.y, f.PalmWorldPos.z },
@@ -176,7 +188,6 @@ namespace Group3
         private void Drop()
         {
             if (_knife == null) return;
-            _knife.transform.SetParent(null, worldPositionStays: true);
             _knife.isKinematic = false;
             _knife.useGravity = true;
             _knife.linearVelocity = Vector3.zero;

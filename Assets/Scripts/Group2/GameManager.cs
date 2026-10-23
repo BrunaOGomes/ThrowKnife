@@ -1,21 +1,20 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI; // Para funcionar com o HUD (Text ou TextMeshPro)
-using TMPro;          // Se estiver usando TextMeshPro, senão remova esta linha
-using Group3;         // Para acessar o ThrowController
+using UnityEngine.UI;
+using TMPro;
+using Group3;
+using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 namespace Group2
 {
     public class GameManager : MonoBehaviour
     {
         [Header("Referências do Grupo 3")]
-        [Tooltip("Arraste o GameObject que tem o ThrowController aqui.")]
         public ThrowController throwController;
 
         [Header("Estoque de Facas")]
-        [Tooltip("Centro do estoque (onde a mão precisa fechar para pegar a faca).")]
         public Vector3 estoqueCentro = new Vector3(3f, 2f, 0f);
-        [Tooltip("Tamanho da área de pega (X, Y, Z).")]
         public Vector3 estoqueExtents = new Vector3(1.5f, 1.5f, 1f);
 
         [Header("Configurações do Jogo")]
@@ -25,23 +24,33 @@ namespace Group2
         private int _baloesEstourados = 0;
 
         [Header("Balões")]
-        [Tooltip("Arraste os balões da cena aqui.")]
         public GameObject[] baloes;
         private int _totalBaloes;
 
         [Header("HUD (Interface)")]
         public TextMeshProUGUI textoFacas;
         public TextMeshProUGUI textoPontuacao;
-        public GameObject painelFimDeJogo; // Um painel que aparece no final
+
+        [Header("Tela Final")]
+        public GameObject painelFimDeJogo; // O painel que estava desativado
+        public TextMeshProUGUI textoResultadoFinal; // O texto que vai mostrar os balões
+
+        private bool _jogoFinalizado;
 
         void Start()
         {
-            Debug.Log("GameManager iniciou com sucesso!");
-            _facasRestantes = facasIniciais;
-            _totalBaloes = baloes.Length;
-            if (painelFimDeJogo != null) painelFimDeJogo.SetActive(false);
+            // O estoque não pode oferecer mais facas do que as disponíveis no controlador.
+            if (throwController != null && throwController.facasNaMesa != null)
+                facasIniciais = Mathf.Min(facasIniciais, throwController.facasNaMesa.Length);
 
-            // --- Conectando aos eventos do Grupo 3 ---
+            _facasRestantes = facasIniciais;
+            _totalBaloes = baloes != null ? baloes.Length : 0;
+
+            GarantirInterface();
+
+            if (painelFimDeJogo != null)
+                painelFimDeJogo.SetActive(false);
+
             if (throwController != null)
             {
                 throwController.OnFacaColidiu += HandleFacaColidiu;
@@ -58,7 +67,6 @@ namespace Group2
 
         void OnDestroy()
         {
-            // Limpar eventos para não dar erro ao fechar o jogo
             if (throwController != null)
             {
                 throwController.OnFacaColidiu -= HandleFacaColidiu;
@@ -67,57 +75,54 @@ namespace Group2
             }
         }
 
-        // ==========================================
-        // CONTRATO: GRUPO 2 -> GRUPO 3
-        // Chamado pelo ThrowController quando a mão fecha
-        // ==========================================
         public bool TentarPegarFaca(Vector3 maoMundo)
         {
-            // 1. Tem faca no estoque?
             if (_facasRestantes <= 0) return false;
 
-            // 2. A mão está dentro da área do estoque?
             Vector3 localPos = maoMundo - estoqueCentro;
             if (Mathf.Abs(localPos.x) > estoqueExtents.x ||
                 Mathf.Abs(localPos.y) > estoqueExtents.y ||
                 Mathf.Abs(localPos.z) > estoqueExtents.z)
             {
-                return false; // Mão longe do estoque
+                return false;
             }
 
-            // 3. Autoriza o Grupo 3 a prender a faca
             _facasRestantes--;
             AtualizarHUD();
             return true;
         }
 
-        // ==========================================
-        // CONTRATOS: GRUPO 3 -> GRUPO 2
-        // ==========================================
         private void HandleFacaColidiu()
         {
-            // A faca cruzou o plano Z e acertou um balão
             _baloesEstourados++;
-            _pontuacao += 10; // 10 pontos por balão
+            _pontuacao += 10;
             AtualizarHUD();
 
-            // Desativa um balão (o Grupo 3 já destruiu a faca)
+            // Desativa um balão ativo
             foreach (var b in baloes)
             {
                 if (b != null && b.activeSelf)
                 {
-                    b.SetActive(false); // "Estoura" o balão
+                    b.SetActive(false);
                     break;
                 }
             }
 
-            VerificarFimDeJogo();
+            // Se estourou todos os balões, o jogo acaba
+            if (_baloesEstourados >= _totalBaloes || _facasRestantes <= 0)
+            {
+                FinalizarJogo();
+            }
         }
 
         private void HandleFacaSaiuDaCena()
         {
-            // A faca errou ou caiu. Só checa se o jogo acabou.
-            VerificarFimDeJogo();
+            // Se não tem mais facas para jogar, o jogo acaba
+            if (_facasRestantes <= 0 && throwController != null)
+            {
+                // Espera um pouco para a última faca terminar de voar antes de mostrar a tela
+                Invoke(nameof(FinalizarJogo), 1.5f);
+            }
         }
 
         private void HandleLancamento(LaunchData data)
@@ -125,47 +130,120 @@ namespace Group2
             Debug.Log($"[GameManager] Faca lançada com velocidade: {data.Velocidade[0]:F1}, {data.Velocidade[1]:F1}, {data.Velocidade[2]:F1}");
         }
 
-        // ==========================================
-        // LÓGICA GERAL
-        // ==========================================
         private void AtualizarHUD()
         {
             if (textoFacas != null)
                 textoFacas.text = $"Facas: {_facasRestantes}";
-
             if (textoPontuacao != null)
                 textoPontuacao.text = $"Pontos: {_pontuacao}";
         }
 
-        private void VerificarFimDeJogo()
+        private void FinalizarJogo()
         {
-            // O jogo acaba se:
-            // 1. Todos os balões foram estourados OU
-            // 2. Acabaram as facas e não tem nenhuma voando no momento
-            bool semBaloes = (_baloesEstourados >= _totalBaloes);
-            bool semFacas = (_facasRestantes <= 0);
+            if (_jogoFinalizado) return;
+            _jogoFinalizado = true;
 
-            if (semBaloes || semFacas)
-            {
-                // Espera um segundinho antes de mostrar o painel para a faca terminar o trajeto
-                Invoke(nameof(MostrarFimDeJogo), 2f);
-            }
-        }
-
-        private void MostrarFimDeJogo()
-        {
             if (painelFimDeJogo != null)
             {
                 painelFimDeJogo.SetActive(true);
-                TextMeshProUGUI txt = painelFimDeJogo.GetComponentInChildren<TextMeshProUGUI>();
-                if (txt != null) txt.text = $"FIM DE JOGO!\nAcertos: {_baloesEstourados}/{_totalBaloes}";
+
+                if (textoResultadoFinal != null)
+                {
+                    textoResultadoFinal.text = $"FIM DE JOGO!\n\nBalões Estourados: {_baloesEstourados} de {_totalBaloes}\nPontuação Final: {_pontuacao}";
+                }
             }
-            Debug.Log("[GameManager] FIM DE JOGO!");
+            if (throwController != null)
+                throwController.enabled = false;
+            Debug.Log("[GameManager] Jogo Finalizado!");
         }
-        void OnDrawGizmos()
+
+        void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.green;
             Gizmos.DrawWireCube(estoqueCentro, estoqueExtents * 2);
+        }
+
+        public void ReiniciarJogo()
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        private void GarantirInterface()
+        {
+            if (painelFimDeJogo != null) return;
+
+            GameObject canvasObject = new GameObject("Canvas (HUD)", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+            Canvas canvas = canvasObject.GetComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            CanvasScaler scaler = canvasObject.GetComponent<CanvasScaler>();
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1920, 1080);
+            scaler.matchWidthOrHeight = 0.5f;
+
+            textoFacas = CriarTexto(canvasObject.transform, "TextoFacas", new Vector2(20, -20), new Vector2(300, 60), TextAlignmentOptions.TopLeft, 30);
+            textoPontuacao = CriarTexto(canvasObject.transform, "TextoPontuacao", new Vector2(-20, -20), new Vector2(300, 60), TextAlignmentOptions.TopRight, 30);
+            textoFacas.rectTransform.anchorMin = new Vector2(0, 1);
+            textoFacas.rectTransform.anchorMax = new Vector2(0, 1);
+            textoFacas.rectTransform.pivot = new Vector2(0, 1);
+            textoPontuacao.rectTransform.anchorMin = new Vector2(1, 1);
+            textoPontuacao.rectTransform.anchorMax = new Vector2(1, 1);
+            textoPontuacao.rectTransform.pivot = new Vector2(1, 1);
+
+            painelFimDeJogo = new GameObject("PainelFimDeJogo", typeof(RectTransform), typeof(Image));
+            painelFimDeJogo.transform.SetParent(canvasObject.transform, false);
+            RectTransform panelRect = painelFimDeJogo.GetComponent<RectTransform>();
+            panelRect.anchorMin = panelRect.anchorMax = new Vector2(0.5f, 0.5f);
+            panelRect.sizeDelta = new Vector2(700, 460);
+            painelFimDeJogo.GetComponent<Image>().color = new Color(0.05f, 0.05f, 0.05f, 0.92f);
+
+            textoResultadoFinal = CriarTexto(painelFimDeJogo.transform, "ResultadoFinal", new Vector2(0, 55), new Vector2(640, 270), TextAlignmentOptions.Center, 34);
+            textoResultadoFinal.rectTransform.anchorMin = textoResultadoFinal.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            textoResultadoFinal.color = Color.white;
+
+            GameObject buttonObject = new GameObject("BotaoReiniciar", typeof(RectTransform), typeof(Image), typeof(Button));
+            buttonObject.transform.SetParent(painelFimDeJogo.transform, false);
+            RectTransform buttonRect = buttonObject.GetComponent<RectTransform>();
+            buttonRect.anchorMin = buttonRect.anchorMax = new Vector2(0.5f, 0);
+            buttonRect.pivot = new Vector2(0.5f, 0);
+            buttonRect.anchoredPosition = new Vector2(0, 35);
+            buttonRect.sizeDelta = new Vector2(280, 70);
+            Image buttonImage = buttonObject.GetComponent<Image>();
+            buttonImage.color = new Color(0.15f, 0.55f, 0.25f, 1);
+            Button button = buttonObject.GetComponent<Button>();
+            button.targetGraphic = buttonImage;
+            button.onClick.AddListener(ReiniciarJogo);
+
+            TextMeshProUGUI buttonLabel = CriarTexto(buttonObject.transform, "TextoBotao", Vector2.zero, new Vector2(260, 60), TextAlignmentOptions.Center, 28);
+            buttonLabel.text = "JOGAR NOVAMENTE";
+            buttonLabel.color = Color.white;
+            buttonLabel.rectTransform.anchorMin = Vector2.zero;
+            buttonLabel.rectTransform.anchorMax = Vector2.one;
+            buttonLabel.rectTransform.offsetMin = buttonLabel.rectTransform.offsetMax = Vector2.zero;
+
+            if (FindObjectOfType<EventSystem>() == null)
+            {
+                GameObject eventSystem = new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
+                eventSystem.transform.SetParent(null);
+            }
+
+            painelFimDeJogo.SetActive(false);
+        }
+
+        private static TextMeshProUGUI CriarTexto(Transform parent, string nome, Vector2 posicao, Vector2 tamanho, TextAlignmentOptions alinhamento, float fonte)
+        {
+            GameObject textoObject = new GameObject(nome, typeof(RectTransform), typeof(TextMeshProUGUI));
+            textoObject.transform.SetParent(parent, false);
+            RectTransform rect = textoObject.GetComponent<RectTransform>();
+            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = posicao;
+            rect.sizeDelta = tamanho;
+            TextMeshProUGUI texto = textoObject.GetComponent<TextMeshProUGUI>();
+            texto.alignment = alinhamento;
+            texto.fontSize = fonte;
+            texto.color = Color.white;
+            texto.raycastTarget = false;
+            return texto;
         }
     }
 }
