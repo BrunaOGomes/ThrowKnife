@@ -4688,7 +4688,19 @@ MonoBehaviour:
   invertYaw: 0
   invertPitch: 0
   invertZ: 1
-  logEveryFrame: 0
+  worldCenter: {x: 0, y: 1.5, z: 0}
+  worldSize: {x: 6, y: 4, z: 0}
+  positionSmoothSpeed: 15
+  mapDepthToZ: 0
+  depthScale: 2
+  useHandSizeForDepth: 1
+  sizeFar: 0.12
+  sizeNear: 0.3
+  depthRange: 4.5
+  lostTimeout: 0.5
+  closeFramesRequired: 3
+  openFramesRequired: 1
+  logEveryFrame: 1
 --- !u!4 &793661761
 Transform:
   m_ObjectHideFlags: 0
@@ -4921,7 +4933,7 @@ MonoBehaviour:
   - {fileID: 2090424091}
   - {fileID: 1592713788}
   palmAnchor: {fileID: 515755749}
-  minThrowSpeed: 0.5
+  minThrowSpeed: 2.5
   throwBoost: 1.5
   upwardBoost: 0.8
   gravity: {x: 0, y: -9.81, z: 0}
@@ -5933,8 +5945,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Group2.GameManager
   throwController: {fileID: 798391654}
-  estoqueCentro: {x: 0, y: 1.5, z: 0}
-  estoqueExtents: {x: 10, y: 10, z: 10}
+  estoqueCentro: {x: 0, y: 1.2, z: 0}
+  estoqueExtents: {x: 3, y: 1.5, z: 3}
   facasIniciais: 3
   baloes:
   - {fileID: 1567664570}
