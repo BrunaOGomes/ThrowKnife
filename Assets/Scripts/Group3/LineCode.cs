@@ -16,6 +16,7 @@ public class LineCode : MonoBehaviour
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.useWorldSpace = true;
         lineRenderer.startWidth = 0.1f;
         lineRenderer.endWidth = 0.1f;
     }
