@@ -4600,8 +4600,27 @@ MonoBehaviour:
   - {fileID: 932477118}
   - {fileID: 155266081}
   - {fileID: 2015284080}
-  scale: 10
+  scale: 2
   palmIndex: 0
+  handRoot: {fileID: 1925354028}
+  rotateHandRoot: 1
+  preserveSkeleton: 1
+  handRootEulerOffset: {x: 0, y: 0, z: 0}
+  invertYaw: 0
+  invertPitch: 0
+  invertZ: 1
+  worldCenter: {x: 0, y: 1.5, z: 0}
+  worldSize: {x: 6, y: 4, z: 0}
+  positionSmoothSpeed: 15
+  mapDepthToZ: 0
+  depthScale: 2
+  useHandSizeForDepth: 1
+  sizeFar: 0.12
+  sizeNear: 0.3
+  depthRange: 4.5
+  lostTimeout: 0.5
+  closeFramesRequired: 3
+  openFramesRequired: 1
   logEveryFrame: 1
 --- !u!4 &793661761
 Transform:

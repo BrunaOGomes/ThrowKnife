@@ -9,9 +9,15 @@ namespace Group3
         public Transform origin;
         public Transform destination;
 
+    [Header("Cor por estado da mão")]
+    //public HandTracking handTracking;   // opcional
+    public Color corAberta = Color.green;
+    public Color corFechada = Color.red;
+
         void Start()
         {
             lineRenderer = GetComponent<LineRenderer>();
+            lineRenderer.useWorldSpace = true;
             lineRenderer.startWidth = 0.1f;
             lineRenderer.endWidth = 0.1f;
         }

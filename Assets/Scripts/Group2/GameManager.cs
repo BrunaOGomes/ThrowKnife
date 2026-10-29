@@ -77,14 +77,20 @@ namespace Group2
 
         public bool TentarPegarFaca(Vector3 maoMundo)
         {
-            if (_facasRestantes <= 0) return false;
+            // 1. Tem faca no estoque?
+            if (_facasRestantes <= 0)
+            {
+                Debug.Log("[GameManager] Sem facas restantes.");
+                return false;
+            }
 
             Vector3 localPos = maoMundo - estoqueCentro;
             if (Mathf.Abs(localPos.x) > estoqueExtents.x ||
                 Mathf.Abs(localPos.y) > estoqueExtents.y ||
                 Mathf.Abs(localPos.z) > estoqueExtents.z)
             {
-                return false;
+                Debug.Log($"[GameManager] Mão fora do estoque: {maoMundo} | centro={estoqueCentro} extents={estoqueExtents}");
+                return false; // Mão longe do estoque
             }
 
             _facasRestantes--;

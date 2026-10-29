@@ -54,6 +54,9 @@ namespace Group3
                 if (m != null)
                     _tentarPegarFaca = (Func<Vector3, bool>)Delegate.CreateDelegate(typeof(Func<Vector3, bool>), gameManagerBehaviour, m);
             }
+
+            if (_tentarPegarFaca == null)
+                Debug.LogError("[ThrowController] TentarPegarFaca não encontrado no GameManager.");
         }
 
         void Update()
@@ -72,10 +75,15 @@ namespace Group3
                 bool fechou = !_prev.MaoFechada && f.MaoFechada;
                 bool abriu = _prev.MaoFechada && !f.MaoFechada;
 
-                if (fechou && !_holding) TryGrab(f.PalmWorldPos);
+                if (fechou && !_holding)
+                {
+                    Debug.Log($"[ThrowController] Fechou em {f.PalmWorldPos}");
+                    TryGrab(f.PalmWorldPos);
+                }
 
                 if (abriu && _holding)
                 {
+                    Debug.Log($"[ThrowController] Abriu | speed={_calc.Speed:F2} | min={minThrowSpeed:F2}");
                     if (_calc.Speed >= minThrowSpeed) Throw(f);
                     else Drop();
                 }
@@ -120,14 +128,23 @@ namespace Group3
 
         private void TryGrab(Vector3 maoMundo)
         {
-            if (_holding || _tentarPegarFaca == null) return;
-            if (palmAnchor == null)
+            if (_holding || _tentarPegarFaca == null)
             {
-                Debug.LogError("[ThrowController] Palm Anchor não atribuído no Inspector!");
+                Debug.LogWarning($"[ThrowController] TryGrab ignorado (holding={_holding}, delegate={_tentarPegarFaca != null}).");
                 return;
             }
-            if (facasNaMesa == null || _indiceFacaAtual >= facasNaMesa.Length) return;
-            if (!_tentarPegarFaca(maoMundo)) return;
+
+            if (!_tentarPegarFaca(maoMundo))
+            {
+                Debug.Log($"[ThrowController] GameManager negou a pega em {maoMundo}.");
+                return;
+            }
+
+            if (_indiceFacaAtual >= facasNaMesa.Length)
+            {
+                Debug.LogWarning("[ThrowController] Sem facas no array facasNaMesa.");
+                return;
+            }
 
             _knife = facasNaMesa[_indiceFacaAtual];
             _indiceFacaAtual++;
@@ -188,6 +205,8 @@ namespace Group3
         private void Drop()
         {
             if (_knife == null) return;
+            Debug.Log($"[ThrowController] DROP | speed={_calc.Speed:F2} < minThrowSpeed={minThrowSpeed:F2}");
+            _knife.transform.SetParent(null, worldPositionStays: true);
             _knife.isKinematic = false;
             _knife.useGravity = true;
             _knife.linearVelocity = Vector3.zero;

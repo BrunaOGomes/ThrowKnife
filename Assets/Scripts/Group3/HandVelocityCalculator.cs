@@ -5,10 +5,10 @@ namespace Group3
 {
     public class HandVelocityCalculator
     {
-        public float Smoothing = 0.7f;
+        public float Smoothing = 0.35f;
         public float MaxDt = 0.2f;
         public int MinSamples = 2;
-        public float ZWeight = 0.5f;
+        public float ZWeight = 1f;
         public float MinSpeedThreshold = 0.05f;
 
         private struct Sample { public Vector3 P; public float T; }
