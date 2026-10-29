@@ -9,10 +9,6 @@ namespace Group3
         public Transform origin;
         public Transform destination;
 
-    [Header("Cor por estado da mão")]
-    //public HandTracking handTracking;   // opcional
-    public Color corAberta = Color.green;
-    public Color corFechada = Color.red;
 
         void Start()
         {

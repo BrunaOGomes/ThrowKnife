@@ -105,7 +105,6 @@ namespace Group3
             {
                 _resolved = true;
                 OnFacaColidiu?.Invoke();
-                //Destroy(_knife.gameObject); // A faca acertou o balão, então é destruída
                 return;
             }
 
@@ -113,7 +112,6 @@ namespace Group3
             {
                 _resolved = true;
                 OnFacaSaiuDaCena?.Invoke();
-                //Destroy(_knife.gameObject);
             }
         }
 
@@ -171,8 +169,8 @@ namespace Group3
             if (_knife == null) return;
 
             // Garante que a física está ativa e funcionando
-            _knife.isKinematic = false;
-            _knife.useGravity = false;
+            _knife.isKinematic = true;
+            _knife.useGravity = true;
             _knife.detectCollisions = true;
 
             // IMPORTANTE: Força o Unity a atualizar o Rigidbody AGORA, antes de aplicar a velocidade
