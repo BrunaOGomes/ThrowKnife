@@ -98,27 +98,21 @@ namespace Group2
             return true;
         }
 
-        private void HandleFacaColidiu()
+        private void HandleFacaColidiu(Transform balaoAtingido)
         {
             _baloesEstourados++;
             _pontuacao += 10;
             AtualizarHUD();
 
-            // Desativa um balão ativo
-            foreach (var b in baloes)
+            // Desativa APENAS o balão que foi atingido
+            if (balaoAtingido != null)
             {
-                if (b != null && b.activeSelf)
-                {
-                    b.SetActive(false);
-                    break;
-                }
+                balaoAtingido.gameObject.SetActive(false);
+                Debug.Log($"[GameManager] Balão atingido: {balaoAtingido.name}");
             }
 
-            // Se estourou todos os balões, o jogo acaba
             if (_baloesEstourados >= _totalBaloes || _facasRestantes <= 0)
-            {
                 FinalizarJogo();
-            }
         }
 
         private void HandleFacaSaiuDaCena()

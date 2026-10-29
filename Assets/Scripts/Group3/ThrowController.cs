@@ -12,7 +12,7 @@ namespace Group3
         public MonoBehaviour gameManagerBehaviour;
         private Func<Vector3, bool> _tentarPegarFaca;
 
-        public event Action OnFacaColidiu;
+        public event Action<Transform> OnFacaColidiu;
         public event Action OnFacaSaiuDaCena;
         public event Action<LaunchData> OnLancamento;
 
@@ -86,6 +86,7 @@ namespace Group3
                     Debug.Log($"[ThrowController] Abriu | speed={_calc.Speed:F2} | min={minThrowSpeed:F2}");
                     if (_calc.Speed >= minThrowSpeed) Throw(f);
                     else Drop();
+                    _knife.useGravity = true;
                 }
             }
             _prev = f; _hasPrev = true;
@@ -101,11 +102,15 @@ namespace Group3
             Vector3 pos = _knife.position;
             bool cruzou = (_initialVel.z > 0f && pos.z >= balloonPlaneZ) || (_initialVel.z < 0f && pos.z <= balloonPlaneZ);
 
-            if (cruzou && TryHitBalloon(pos))
+            if (cruzou)
             {
-                _resolved = true;
-                OnFacaColidiu?.Invoke();
-                return;
+                Transform hit = TryHitBalloon(pos);
+                if (hit != null)
+                {
+                    _resolved = true;
+                    OnFacaColidiu?.Invoke(hit);
+                    return;
+                }
             }
 
             if (Mathf.Abs(pos.z) > outOfSceneZ || Mathf.Abs(pos.x) > outOfSceneZ || pos.y < -10f)
@@ -169,8 +174,8 @@ namespace Group3
             if (_knife == null) return;
 
             // Garante que a física está ativa e funcionando
-            _knife.isKinematic = true;
-            _knife.useGravity = true;
+            _knife.isKinematic = false;
+            _knife.useGravity = false;
             _knife.detectCollisions = true;
 
             // IMPORTANTE: Força o Unity a atualizar o Rigidbody AGORA, antes de aplicar a velocidade
@@ -215,18 +220,19 @@ namespace Group3
             OnFacaSaiuDaCena?.Invoke();
         }
 
-        private bool TryHitBalloon(Vector3 knifePos)
+        private Transform TryHitBalloon(Vector3 knifePos)
         {
-            if (balloons == null) return false;
+            if (balloons == null) return null;
             Vector2 k = new Vector2(knifePos.x, knifePos.y);
             float best = hitRadius;
+            Transform hit = null;
             foreach (var b in balloons)
             {
-                if (b == null || !b.gameObject.activeSelf) continue; // Só checa balões ativos
+                if (b == null || !b.gameObject.activeSelf) continue;
                 float d = Vector2.Distance(k, new Vector2(b.position.x, b.position.y));
-                if (d <= best) { best = d; return true; }
+                if (d <= best) { best = d; hit = b; }
             }
-            return false;
+            return hit;
         }
     }
 }

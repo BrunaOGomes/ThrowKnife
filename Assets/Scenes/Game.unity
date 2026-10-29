@@ -4609,7 +4609,7 @@ MonoBehaviour:
   invertYaw: 0
   invertPitch: 0
   invertZ: 1
-  worldCenter: {x: 0, y: 1.5, z: 0}
+  worldCenter: {x: 0, y: 1.5, z: -1}
   worldSize: {x: 6, y: 4, z: 0}
   positionSmoothSpeed: 15
   mapDepthToZ: 0
@@ -4882,8 +4882,8 @@ MonoBehaviour:
   - {fileID: 1592713788}
   palmAnchor: {fileID: 515755749}
   minThrowSpeed: 1
-  throwBoost: 3
-  upwardBoost: 0.8
+  throwBoost: 10
+  upwardBoost: 5
   gravity: {x: 0, y: -9.81, z: 0}
   torqueOnThrow: 5
   balloonPlaneZ: 10

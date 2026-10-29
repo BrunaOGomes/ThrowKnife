@@ -21,6 +21,7 @@ serverAddressPort = ('127.0.0.1', 6767)
 try:
     while True:
         success, img = cap.read()
+        img = cv2.flip(img, 1)  # Espelha a imagem horizontalmente
         if not success:
             print("Câmera falhou, reconectando...")
             cap.release()
@@ -44,6 +45,7 @@ try:
                 sock.sendto(frame.to_json().encode(), serverAddressPort)
             except OSError as erro:
                 print(f"UDP: {erro}")
+
 
         img = cv2.resize(img, (0, 0), None, 0.5, 0.5)
         cv2.imshow("Webcam", img)
